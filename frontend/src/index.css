@@ -9,18 +9,26 @@
 
 :root {
   /* Main Colors */
-  --primary-color: #0A0A0A;
-  --secondary-color: #FFFFFF;
+  --primary-color: #0a0a0a;
+  --secondary-color: #ffffff;
   --tertiary-color: #6b7280;
+
+  /* Button colors */
+  --primary-btn-color: #2563eb;
+  --secondary-btn-color: #9ca3af;
+  --info-btn-color: #60a5fa;
+  --warning-btn-color: #fbbf24;
+  --success-btn-color: #4ade80;
+  --error-btn-color: #f87171;
 }
 
 * {
- border: 0;
+  border: 0;
 }
 
 html {
   font-size: 16px;
-  font-family:'Roboto', Arial, Helvetica, sans-serif;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
   font-weight: 400;
   line-height: 1.1rem;
 }
