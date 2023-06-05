@@ -9,7 +9,8 @@ function App() {
         <Route path='*' element={<NotFoundPage />} />
 
         <Route path='/' element={<LoginPage />} />
-        <Route path='login' element={<LoginPage />} />
+        <Route path='sign-in' element={<LoginPage />} />
+        <Route path='sign-up' element={<LoginPage />} />
         <Route path='chats' element={<ChatPage />} />
       </Routes>
     </div>

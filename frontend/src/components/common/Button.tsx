@@ -10,20 +10,22 @@ interface Props extends PropsWithChildren, ButtonHTMLAttributes<HTMLButtonElemen
   endIcon?: IconType
 }
 
-const Button = ({
-  variant = 'contained',
-  color = 'primary',
-  startIcon: StartIcon,
-  endIcon: EndIcon,
-  children,
-  ...buttonProps
-}: Props) => {
+const Button = (props: Props) => {
+  const {
+    variant = 'contained',
+    color = 'primary',
+    startIcon: StartIcon,
+    endIcon: EndIcon,
+    children,
+    ...buttonProps
+  } = props
+
   const variantStyle =
     variant === 'contained'
-      ? `font-semibold text-secondary-color ${bgColorPallette[color]} ease-linear hover:scale-x-105`
-      : `border border-solid border-gray-200 ${hoverBorderColorPallette[color]} ease-linear`
+      ? `font-medium text-secondary-color ${bgColorPallette[color]} ease-linear hover:scale-x-105  duration-100`
+      : `border border-solid border-gray-200 ${hoverBorderColorPallette[color]} ease-linear duration-300`
 
-  const buttonStyle = `w-full rounded-lg py-3 flex flex-row justify-center items-center duration-300 ${variantStyle}`
+  const buttonStyle = `w-full rounded-lg py-3 flex flex-row justify-center items-center ${variantStyle}`
 
   return (
     <button className={buttonStyle} {...buttonProps}>
