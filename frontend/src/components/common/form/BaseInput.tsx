@@ -5,9 +5,11 @@ function BaseInput({ inputStyle, icon: Icon, name = '', type = 'text', children,
 
   return (
     <div className='relative'>
-      <label htmlFor={name} className='absolute left-2 top-1/2 -translate-y-1/2 rounded-lg bg-secondary-color p-2'>
-        {Icon && <Icon />}
-      </label>
+      {Icon && (
+        <label htmlFor={name} className='absolute left-2 top-1/2 -translate-y-1/2 rounded-lg bg-secondary-color p-2'>
+          <Icon />
+        </label>
+      )}
 
       <input type={type} {...inputProps} className={className} />
 

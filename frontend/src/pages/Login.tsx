@@ -12,12 +12,14 @@ function Login() {
         <section className='w-4/5 md:w-2/3 lg:w-1/2'>
           {/* Title */}
           <div>
-            <h2 className='mb-2 text-3xl font-bold md:mb-4 lg:mb-6'>Welcome back!</h2>
-            <span className='text-tertiary-color'>Never alone when you have a chat app!</span>
+            <h2 className='mb-4 text-3xl font-bold md:mb-4 lg:mb-6'>Hang out anytime, anywhere</h2>
+            <span className='text-tertiary-color'>
+              Chat makes it easy and fun to stay close to your favorite people.
+            </span>
           </div>
 
           {/* Login Form */}
-          <form action='' className='mt-8 flex flex-col gap-4 md:mt-12 lg:mt-16'>
+          <form action='' className='mt-4 flex flex-col gap-4 md:mt-6 lg:mt-8'>
             <Input name='username' id='username__input' placeholder='example123' icon={CiUser} />
             <PasswordInput name='password' id='password__input' placeholder='At least 8 characters' icon={CiLock} />
             <Button type='submit' color='info'>
