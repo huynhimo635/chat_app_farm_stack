@@ -1,4 +1,11 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "python.autoComplete.extraPaths": [
+    "/home/maycui/Documents/projects/chat_app_react_fastapi/backend"
+  ],
+  "python.analysis.extraPaths": [
+    "/home/maycui/Documents/projects/chat_app_react_fastapi/backend"
+  ],
+  "cSpell.words": ["fastapi", "uvicorn"]
 }
