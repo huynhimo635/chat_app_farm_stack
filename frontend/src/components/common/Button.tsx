@@ -22,10 +22,10 @@ const Button = (props: Props) => {
 
   const variantStyle =
     variant === 'contained'
-      ? `font-medium text-secondary-color ${bgColorPallette[color]} ease-linear hover:scale-x-105  duration-100`
-      : `border border-solid border-gray-200 ${hoverBorderColorPallette[color]} ease-linear duration-300`
+      ? `font-medium text-secondary-color ${bgColorPallette[color]} ease-linear`
+      : `border border-solid border-gray-200 ${hoverBorderColorPallette[color]} ease-linear`
 
-  const buttonStyle = `w-full rounded-lg py-3 flex flex-row justify-center items-center ${variantStyle}`
+  const buttonStyle = `w-full rounded-lg py-3 flex flex-row justify-center items-center hover:rounded-3xl duration-200 ${variantStyle}`
 
   return (
     <button className={buttonStyle} {...buttonProps}>

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-import { LoginPage, ChatPage, NotFoundPage } from '~/pages'
+import { LoginPage, ChatPage, NotFoundPage, RegisterPage } from '~/pages'
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
 
         <Route path='/' element={<LoginPage />} />
         <Route path='sign-in' element={<LoginPage />} />
-        <Route path='sign-up' element={<LoginPage />} />
+        <Route path='sign-up' element={<RegisterPage />} />
         <Route path='chats' element={<ChatPage />} />
       </Routes>
     </div>

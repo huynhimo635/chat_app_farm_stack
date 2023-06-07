@@ -30,6 +30,7 @@ def get_config():
     return Settings()
 
 
+# Exceptions
 class NotVerified(Exception):
     pass
 

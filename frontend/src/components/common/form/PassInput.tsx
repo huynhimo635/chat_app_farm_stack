@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, forwardRef, ForwardedRef } from 'react'
 
 import { CiRead as ShowPassIcon, CiUnread as HidePassIcon } from 'react-icons/ci'
 import BaseInput from './BaseInput'
 
 import { PassInputProps } from './type'
 
-function PassInput({ showHidePass = false, ...baseInputProps }: PassInputProps) {
+function PassInput({ showHidePass = false, ...baseInputProps }: PassInputProps, ref: ForwardedRef<HTMLInputElement>) {
   const [showPass, setShowPass] = useState(showHidePass)
 
   const handlingToggleShowPass = () => {
@@ -13,7 +13,7 @@ function PassInput({ showHidePass = false, ...baseInputProps }: PassInputProps) 
   }
 
   return (
-    <BaseInput {...baseInputProps} type={showPass ? 'text' : 'password'} inputStyle='pr-12'>
+    <BaseInput {...baseInputProps} ref={ref} type={showPass ? 'text' : 'password'} inputStyle='pr-12'>
       <span
         onClick={handlingToggleShowPass}
         className='absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 font-bold duration-200 ease-in hover:bg-slate-300'
@@ -24,4 +24,4 @@ function PassInput({ showHidePass = false, ...baseInputProps }: PassInputProps) 
   )
 }
 
-export default PassInput
+export default forwardRef(PassInput)

@@ -18,7 +18,7 @@ function Chats() {
           </div>
 
           <div className='pl-4 '>
-            <p className='pt-3 text-sm font-semibold text-tertiary-color'>All Message</p>
+            <p className='pt-3 text-sm font-semibold text-tertiary-color'>All Messages</p>
             <ul className='pl-4'>
               <li className='px-2 py-1 hover:bg-gray-200 hover:font-semibold'>Huynh Nguyen</li>
               <li className='px-2 py-1 hover:bg-gray-200 hover:font-semibold'>Huynh Nguyen</li>

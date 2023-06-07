@@ -11,8 +11,8 @@ from api.serializers.userSerializers import userResponseEntity, userEntity
 from api.utils import auth_helper
 from api.models import users
 
-
 router = APIRouter()
+
 ACCESS_TOKEN_EXPIRES_IN = settings.ACCESS_TOKEN_EXPIRES_IN
 REFRESH_TOKEN_EXPIRES_IN = settings.REFRESH_TOKEN_EXPIRES_IN
 
@@ -31,19 +31,22 @@ async def create_user(payload: users.CreateUserSchema):
             status_code=status.HTTP_409_CONFLICT, detail="Account already exist"
         )
 
-    # Compare password and passwordConfirm
-    if payload.password != payload.passwordConfirm:
+    # Compare password and password_confirm
+    if payload.password != payload.password_confirm:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Passwords do not match"
         )
 
     #  Hash the password
     payload.password = auth_helper.hash_password(payload.password)
-    del payload.passwordConfirm
+    del payload.password_confirm
     payload.verified = True
+    payload.first_name = payload.first_name.lower()
+    payload.last_name = payload.last_name.lower()
     payload.email = payload.email.lower()
     payload.created_at = datetime.utcnow()
     payload.updated_at = payload.created_at
+
     result = User.insert_one(payload.dict())
     new_user = userResponseEntity(User.find_one({"_id": result.inserted_id}))
 
@@ -182,11 +185,7 @@ def refresh_token(response: Response, Authorize: AuthJWT = Depends()):
 
 # [...] logout user
 @router.get("/logout", status_code=status.HTTP_200_OK)
-def logout(
-    response: Response,
-    Authorize: AuthJWT = Depends(),
-    user_id: str = Depends(oauth2.require_user),
-):
+def logout(response: Response, Authorize: AuthJWT = Depends()):
     Authorize.unset_jwt_cookies()
     response.set_cookie("logged_in", "", -1)
 
