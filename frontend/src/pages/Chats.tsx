@@ -1,9 +1,18 @@
-import { Helmet, Input } from '~/components'
+import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
+import { Helmet, Input } from '~/components'
 import { HiHome } from 'react-icons/hi'
 import { TbSend } from 'react-icons/tb'
 
 function Chats() {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    Cookies.remove('access_token')
+    navigate('sign-in')
+  }
+
   return (
     <Helmet title='Chat Box'>
       <main className='relative grid h-screen w-screen grid-cols-12'>
@@ -13,7 +22,12 @@ function Chats() {
             <p className='text-lg font-semibold'>Chat App</p>
             <div>
               <p>Huynh Nguyen</p>
-              <p className='cursor-pointer text-right text-sm text-tertiary-color hover:underline'>Log out</p>
+              <p
+                className='cursor-pointer text-right text-sm text-tertiary-color hover:underline'
+                onClick={handleLogout}
+              >
+                Log out
+              </p>
             </div>
           </div>
 

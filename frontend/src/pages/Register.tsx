@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -6,6 +8,8 @@ import { Helmet, AuthLayout, Input, PasswordInput, Button } from '~/components'
 import { CiLock, CiMail, CiUser } from 'react-icons/ci'
 
 import { commonErrorMessages as erMessages } from '~/utils/constant'
+import { commonStore } from '~/store'
+import authApi from '~/api/authApi'
 
 import type { RegisterRequestType } from '~/models'
 
@@ -20,13 +24,32 @@ const schema = yup
   .required()
 
 function Register() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<RegisterRequestType>({ resolver: yupResolver(schema), mode: 'onSubmit' })
 
-  const onSubmit = (data: RegisterRequestType) => console.log({ data })
+  const onSubmit = async (data: RegisterRequestType) => {
+    const alertObj = {
+      type: 'success',
+      message: 'Created your account successfully!'
+    }
+    try {
+      dispatch(commonStore.actions.setLoading(true))
+      await authApi.register(data)
+      navigate('/sign-in')
+    } catch (error) {
+      alertObj.message = error as string
+      alertObj.type = 'error'
+    } finally {
+      dispatch(commonStore.actions.displayNotification(alertObj))
+      dispatch(commonStore.actions.setLoading(false))
+    }
+  }
 
   return (
     <Helmet title='Register'>

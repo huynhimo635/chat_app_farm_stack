@@ -16,7 +16,7 @@ function NotFound() {
 
           <span className='relative block border border-current bg-[#1A2238] px-8 py-3'>
             {/* <router- to='/'>Go Home</router-> */}
-            <Link to='/login'>Go home!</Link>
+            <Link to='/sign-in'>Go home!</Link>
           </span>
         </a>
       </button>

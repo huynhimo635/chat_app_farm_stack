@@ -20,7 +20,6 @@ function BaseInput(props: BaseInputProps, ref: ForwardedRef<HTMLInputElement> | 
     const baseStyle =
       'w-full rounded-lg bg-gray-200 pr-2 pl-12 py-3 text-sm border-2 border-solid outline-none duration-100 ease-linear transition-colors'
 
-    console.log(errorText, !errorText)
     const borderStyle = !errorText
       ? 'border-gray-200 focus:border-primary-btn-color '
       : 'border-error-btn-color focus:border-error-btn-color'
