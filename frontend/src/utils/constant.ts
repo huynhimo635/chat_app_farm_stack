@@ -55,3 +55,8 @@ export const commonErrorMessages = {
     return `This field must be equal or greater than ${number} characters`
   }
 }
+
+// from https://github.com/facebook/create-react-app/issues/11951, it seems react had an issue with .env file
+// So, I just fix it as string here and go back to change it later.
+export const API_BASE_URL = 'http://localhost:8000/api/'
+export const WS_BASE_URL = 'ws://localhost:8000'

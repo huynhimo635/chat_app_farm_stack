@@ -1,21 +1,24 @@
-import { PropsWithChildren, useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
-import commonApi from '~/api/commonApi'
+import Cookies from 'js-cookie'
+import { PropsWithChildren, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-interface Props extends PropsWithChildren {
-  hrefTo: string
-  requireSignedIn: boolean
-}
+import userApi from '~/api/userApi'
+import { userStore } from '~/store'
 
-function ProtectedRoute({ hrefTo, requireSignedIn = true, children }: Props): JSX.Element {
-  const [isSignedIn, setIsSignedIn] = useState(true)
+function ProtectedRoute({ children }: PropsWithChildren): JSX.Element {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const checkSignedIn = async () => {
     try {
-      await commonApi.healthCheckProtected()
-      setIsSignedIn(true)
+      if (!Cookies.get('access_token')) navigate('/sign-in', { replace: true })
+
+      const res = await userApi.getProfile()
+      const resData = res.data
+      dispatch(userStore.actions.setProfile(resData?.user))
     } catch (error) {
-      setIsSignedIn(false)
+      navigate('/sign-in', { replace: true })
     }
   }
 
@@ -23,9 +26,6 @@ function ProtectedRoute({ hrefTo, requireSignedIn = true, children }: Props): JS
     checkSignedIn()
   }, [])
 
-  if (isSignedIn !== requireSignedIn) {
-    return <Navigate to={hrefTo} replace />
-  }
   return <>{children}</>
 }
 

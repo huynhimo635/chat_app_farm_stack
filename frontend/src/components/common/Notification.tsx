@@ -1,8 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { useSelector } from '~/store/store'
-import { commonStore } from '~/store'
+import { commonStore, useSelector } from '~/store'
 
 const typeStyles = {
   error: 'border-red-400 bg-red-100 text-red-700',

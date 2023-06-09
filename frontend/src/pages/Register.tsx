@@ -41,7 +41,7 @@ function Register() {
     try {
       dispatch(commonStore.actions.setLoading(true))
       await authApi.register(data)
-      navigate('/sign-in')
+      navigate('/sign-in', { replace: true })
     } catch (error) {
       alertObj.message = error as string
       alertObj.type = 'error'

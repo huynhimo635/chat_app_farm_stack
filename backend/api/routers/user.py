@@ -12,3 +12,4 @@ router = APIRouter()
 def get_profile(user_id: str = Depends(oauth2.require_user)):
     user = userResponseEntity(User.find_one({'_id': ObjectId(str(user_id))}))
     return {"status": "success", "user": user}
+

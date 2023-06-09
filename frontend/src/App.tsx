@@ -7,27 +7,13 @@ const Routers = () => (
   <Routes>
     <Route path='*' element={<NotFoundPage />} />
 
-    <Route path='/' element={<Navigate to='chats' replace />} />
+    <Route path='/' element={<Navigate to='/chats' replace />} />
+    <Route path='/sign-in' element={<LoginPage />} />
+    <Route path='/sign-up' element={<RegisterPage />} />
     <Route
-      path='sign-in'
+      path='/chats'
       element={
-        <ProtectedRoute requireSignedIn={false} hrefTo='chats'>
-          <LoginPage />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-      path='sign-up'
-      element={
-        <ProtectedRoute requireSignedIn={false} hrefTo='chats'>
-          <RegisterPage />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-      path='chats'
-      element={
-        <ProtectedRoute requireSignedIn hrefTo='sign-in'>
+        <ProtectedRoute>
           <ChatPage />
         </ProtectedRoute>
       }

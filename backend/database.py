@@ -18,4 +18,9 @@ db = client[settings.MONGO_DATABASE]
 User = db.users
 User.create_index([("email", pymongo.ASCENDING)], unique=True)
 
+# Define Conversation tables
+Conversation = db.conversations
 
+# Define Message tables
+Message = db.messages
+Message.create_index([("conversation_id", pymongo.ASCENDING)])

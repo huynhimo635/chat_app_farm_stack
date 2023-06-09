@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -10,7 +11,8 @@ import { CiLock, CiMail } from 'react-icons/ci'
 
 import { commonErrorMessages as erMessages } from '~/utils/constant'
 import authApi from '~/api/authApi'
-import { commonStore } from '~/store'
+import { commonStore, userStore } from '~/store'
+import userApi from '~/api/userApi'
 
 import type { LoginRequestType, LoginResponseType } from '~/models'
 
@@ -36,8 +38,8 @@ function Login() {
       dispatch(commonStore.actions.setLoading(true))
       const res = await authApi.login(data)
       const resData: LoginResponseType = res.data
-      Cookies.set('access_token', resData.access_token)
-      navigate('/chats')
+      Cookies.set('access_token', resData.access_token, { expires: 3600 })
+      navigate('/chats', { replace: true })
     } catch (error) {
       dispatch(
         commonStore.actions.displayNotification({
@@ -49,6 +51,19 @@ function Login() {
       dispatch(commonStore.actions.setLoading(false))
     }
   }
+
+  const checkSignedIn = async () => {
+    try {
+      const res = await userApi.getProfile()
+      const resData = res.data
+      dispatch(userStore.actions.setProfile(resData?.user))
+      navigate('/chats', { replace: true })
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    checkSignedIn()
+  }, [])
 
   return (
     <Helmet title='Login'>

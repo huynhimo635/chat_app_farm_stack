@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react'
-import { useSelector } from '~/store/store'
+import { useSelector } from '~/store'
 
 function Loading({ children }: PropsWithChildren) {
   const isLoading = useSelector((state) => state.common.loading)

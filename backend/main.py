@@ -3,12 +3,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
+
 from config import settings
 
 from api.routers import auth, user, common
+from sockets import sio_app
 
 # Create the FastAPP app
 app = FastAPI()
+# Include our socket
+app.mount("/ws", sio_app)
 
 origins = [
     settings.CLIENT_ORIGIN,
@@ -34,10 +38,12 @@ async def startup_db_client():
 async def shutdown_db_client():
     pass
 
+
 # Include our API router
-app.include_router(common.router, tags=['Common'], prefix='/api')
-app.include_router(auth.router, tags=['Auth'], prefix='/api/auth')
-app.include_router(user.router, tags=['Users'], prefix='/api/users')
+app.include_router(common.router, tags=["Common"], prefix="/api")
+app.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
+app.include_router(user.router, tags=["Users"], prefix="/api/users")
+
 
 # Define our main function, we can easily run the server
 if __name__ == "__main__":

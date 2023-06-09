@@ -27,6 +27,7 @@ class LoginUserSchema(BaseModel):
 
 class UserResponseSchema(UserBaseSchema):
     id: str
+    full_name: str = ""
     pass
 
 

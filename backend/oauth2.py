@@ -1,5 +1,4 @@
 import base64
-import jwt
 from typing import List
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -39,6 +38,7 @@ class NotVerified(Exception):
 
 class UserNotFound(Exception):
     pass
+
 
 reuseable_oauth = OAuth2PasswordBearer(
     tokenUrl="/login",
@@ -84,4 +84,6 @@ def require_user(Authorize: AuthJWT = Depends()):
         )
 
     return user_id
+
+
 

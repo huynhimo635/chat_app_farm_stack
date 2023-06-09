@@ -3,5 +3,6 @@ export { default as Button } from './Button'
 export { default as Loading } from './Loading'
 export { default as Notification } from './Notification'
 export { default as ProtectedRoute } from './ProtectedRoute'
+export { default as ChatBox } from './ChatBox'
 
 export * from './form'

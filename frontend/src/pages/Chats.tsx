@@ -1,17 +1,52 @@
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
-import { Helmet, Input } from '~/components'
+import { Helmet, Input, ChatBox } from '~/components'
 import { HiHome } from 'react-icons/hi'
 import { TbSend } from 'react-icons/tb'
 
+import userApi from '~/api/userApi'
+import { commonStore, userStore, useSelector } from '~/store'
+
+import type { UserType } from '~/models'
+
 function Chats() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const userProfile: UserType = useSelector((state) => state.user?.user)
 
   const handleLogout = () => {
     Cookies.remove('access_token')
-    navigate('sign-in')
+    navigate('/sign-in', { replace: true })
   }
+
+  const getProfile = async () => {
+    try {
+      dispatch(commonStore.actions.setLoading(true))
+      const res = await userApi.getProfile()
+      const resData = res.data
+      dispatch(userStore.actions.setProfile(resData?.user))
+    } catch (error) {
+      dispatch(
+        commonStore.actions.displayNotification({
+          type: 'error',
+          message: error
+        })
+      )
+      // logout to rest old values
+      handleLogout()
+    } finally {
+      dispatch(commonStore.actions.setLoading(false))
+    }
+  }
+
+  // Check if not has user data yet, call api to get
+  useEffect(() => {
+    if (!userProfile) getProfile()
+  }, [])
 
   return (
     <Helmet title='Chat Box'>
@@ -21,7 +56,7 @@ function Chats() {
           <div className='flex h-16 w-full items-center justify-between border-b-[0.5px] border-solid border-gray-300 px-2 md:h-20 md:px-4'>
             <p className='text-lg font-semibold'>Chat App</p>
             <div>
-              <p>Huynh Nguyen</p>
+              <p className='font-semibold capitalize'>{userProfile?.full_name}</p>
               <p
                 className='cursor-pointer text-right text-sm text-tertiary-color hover:underline'
                 onClick={handleLogout}
@@ -31,13 +66,27 @@ function Chats() {
             </div>
           </div>
 
-          <div className='pl-4 '>
-            <p className='pt-3 text-sm font-semibold text-tertiary-color'>All Messages</p>
-            <ul className='pl-4'>
-              <li className='px-2 py-1 hover:bg-gray-200 hover:font-semibold'>Huynh Nguyen</li>
-              <li className='px-2 py-1 hover:bg-gray-200 hover:font-semibold'>Huynh Nguyen</li>
-              <li className='px-2 py-1 hover:bg-gray-200 hover:font-semibold'>Huynh Nguyen</li>
-            </ul>
+          <div>
+            <div className='pl-4'>
+              <p className='cursor-pointer pt-3 font-semibold uppercase text-tertiary-color hover:font-semibold hover:text-primary-color'>
+                General #
+              </p>
+            </div>
+
+            <div className='pl-4'>
+              <p className='pt-3 text-sm font-semibold uppercase text-tertiary-color'>All Messages</p>
+              <ul className='pl-4'>
+                <li className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'>
+                  Huynh Nguyen
+                </li>
+                <li className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'>
+                  Huynh Nguyen
+                </li>
+                <li className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'>
+                  Huynh Nguyen
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -50,38 +99,7 @@ function Chats() {
               <HiHome />
             </span>
           </div>
-          <div className='flex w-full flex-1 flex-col justify-between bg-gray-200 text-sm'>
-            <ul className='m-2 h-full overflow-y-auto md:m-4'>
-              <li className='py-3 text-left'>
-                <div className='flex items-center gap-4'>
-                  <p className='font-semibold'>Huynh nguyen</p>
-                  <small className='text-tertiary-color'>06/06/2022 11:15</small>
-                </div>
-                <div className='ml-6 w-max rounded-3xl bg-white px-1 py-2'>1</div>
-              </li>
-              <li className='py-3 text-right'>
-                <div className='mr-2'>
-                  <span className='rounded-3xl bg-primary-btn-color px-1 py-2 text-white'>`1`</span>
-                </div>
-              </li>
-              <li className='py-3 text-left'>
-                <span className='rounded-3xl bg-white px-1 py-2'>1</span>
-              </li>
-              <li className='py-3 text-left'>
-                <span className='rounded-3xl bg-white px-1 py-2'>1</span>
-              </li>
-              <li className='py-3 text-left'>
-                <span className='rounded-3xl bg-white px-1 py-2'>1</span>
-              </li>
-            </ul>
-            <div className='w-full border-t-[0.5px] border-solid border-gray-300 bg-secondary-color px-2 py-2 md:px-4'>
-              <Input placeholder='Type a message' inputStyle='pl-4'>
-                <span className='absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-xl font-bold duration-200 ease-in hover:bg-slate-300'>
-                  <TbSend />
-                </span>
-              </Input>
-            </div>
-          </div>
+          <ChatBox />
         </section>
       </main>
     </Helmet>

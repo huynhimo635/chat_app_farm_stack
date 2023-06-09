@@ -1,8 +1,10 @@
 import axiosClient from './axiosClient'
 
+const prefixUrl = '/users'
+
 const commonApi = {
-  healthCheck: () => {
-    const subUrl = '/health-check'
+  getProfile: () => {
+    const subUrl = `${prefixUrl}/profile`
     return axiosClient.get(subUrl)
   }
 }
