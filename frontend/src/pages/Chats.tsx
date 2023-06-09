@@ -1,20 +1,22 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
-import { Helmet, Input, ChatBox } from '~/components'
+import { Helmet, ChatBox } from '~/components'
 import { HiHome } from 'react-icons/hi'
-import { TbSend } from 'react-icons/tb'
 
 import userApi from '~/api/userApi'
 import { commonStore, userStore, useSelector } from '~/store'
 
 import type { UserType } from '~/models'
+import conversationApi from '~/api/conversationApi'
 
 function Chats() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const [conversations, setConversations] = useState([])
 
   const userProfile: UserType = useSelector((state) => state.user?.user)
 
@@ -43,9 +45,28 @@ function Chats() {
     }
   }
 
-  // Check if not has user data yet, call api to get
+  const getConversations = async () => {
+    try {
+      dispatch(commonStore.actions.setLoading(true))
+      const res = await conversationApi.getAll()
+      const resData = res.data
+      setConversations(resData?.conversations)
+    } catch (error) {
+      dispatch(
+        commonStore.actions.displayNotification({
+          type: 'error',
+          message: error
+        })
+      )
+    } finally {
+      dispatch(commonStore.actions.setLoading(false))
+    }
+  }
+
   useEffect(() => {
+    // Check if not has user data yet, call api to get
     if (!userProfile) getProfile()
+    getConversations()
   }, [])
 
   return (
@@ -76,15 +97,18 @@ function Chats() {
             <div className='pl-4'>
               <p className='pt-3 text-sm font-semibold uppercase text-tertiary-color'>All Messages</p>
               <ul className='pl-4'>
-                <li className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'>
-                  Huynh Nguyen
-                </li>
-                <li className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'>
-                  Huynh Nguyen
-                </li>
-                <li className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'>
-                  Huynh Nguyen
-                </li>
+                {conversations?.map((value, index) => {
+                  const talker = value?.members.find((mem) => mem?.id !== userProfile.id)
+
+                  return (
+                    <li
+                      key={index}
+                      className='cursor-pointer rounded-l-2xl px-2 py-4 hover:bg-gray-200 hover:font-semibold'
+                    >
+                      {talker?.full_name}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>

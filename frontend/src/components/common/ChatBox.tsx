@@ -7,33 +7,27 @@ import { Input } from './form'
 import { useSelector } from '~/store'
 import { WS_BASE_URL } from '~/utils/constant'
 
-const socket = io(WS_BASE_URL, {
-  path: '/ws/socket.io/',
-  transports: ['websocket', 'polling']
-})
-
 const ChatBox = () => {
-  const [isConnected, setIsConnected] = useState(false)
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
 
   const selfProfile = useSelector((state) => state.user.user)
   const wsSubUrl = useSelector((state) => state.chat.subUrl)
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      setIsConnected(socket.connected)
-    })
+  const socket = io(WS_BASE_URL, {
+    path: '/ws/socket.io/',
+    transports: ['websocket', 'polling']
+  })
 
-    socket.on('disconnect', () => {
-      setIsConnected(socket.connected)
-    })
+  const activeSocket = () => {
+    socket.on('connect', () => {})
+
+    socket.on('disconnect', () => {})
 
     socket.on('chat', (data) => {
-      console.log({ data })
       setMessages((prevMessages) => [...prevMessages, data.message])
     })
-  }, [])
+  }
 
   const handleChangeInput = (event) => {
     const value = event.target.value.trim()
@@ -47,6 +41,10 @@ const ChatBox = () => {
     setMessage('')
   }
 
+  useEffect(() => {
+    activeSocket()
+  }, [])
+
   return (
     <div className='flex w-full flex-1 flex-col justify-between bg-gray-200 text-sm'>
       <ul className='m-2 h-full overflow-y-auto md:m-4'>
@@ -56,7 +54,7 @@ const ChatBox = () => {
             <p className='font-semibold'>Huynh nguyen</p>
             <small className='text-tertiary-color'>06/06/2022 11:15</small>
           </div>
-          <div className='ml-6 w-max rounded-3xl bg-white px-1 py-2'>{isConnected ? 'Connected' : 'unConnected'}</div>
+          <div className='ml-6 w-max rounded-3xl bg-white px-1 py-2'>{'Connected'}</div>
         </li>
 
         {/* Self message */}
