@@ -6,11 +6,12 @@ import uvicorn
 
 from config import settings
 
-from api.routers import auth, user, common
+from api.routers import auth, user, common, conversation, message
+
 from sockets import sio_app
 
 # Create the FastAPP app
-app = FastAPI()
+app = FastAPI(logging=True, debug=settings.DEBUG_MODE)
 # Include our socket
 app.mount("/ws", sio_app)
 
@@ -43,6 +44,10 @@ async def shutdown_db_client():
 app.include_router(common.router, tags=["Common"], prefix="/api")
 app.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
 app.include_router(user.router, tags=["Users"], prefix="/api/users")
+app.include_router(
+    conversation.router, tags=["Conversations"], prefix="/api/conversations"
+)
+app.include_router(message.router, tags=["Messages"], prefix="/api/messages")
 
 
 # Define our main function, we can easily run the server

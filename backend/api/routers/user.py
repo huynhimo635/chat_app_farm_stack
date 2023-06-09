@@ -8,8 +8,7 @@ import oauth2
 router = APIRouter()
 
 
-@router.get('/profile', response_model=users.UserResponse)
+@router.get("/profile", response_model=users.UserResponse)
 def get_profile(user_id: str = Depends(oauth2.require_user)):
-    user = userResponseEntity(User.find_one({'_id': ObjectId(str(user_id))}))
+    user = userResponseEntity(User.find_one({"_id": ObjectId(str(user_id))}))
     return {"status": "success", "user": user}
-

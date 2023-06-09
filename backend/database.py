@@ -20,6 +20,8 @@ User.create_index([("email", pymongo.ASCENDING)], unique=True)
 
 # Define Conversation tables
 Conversation = db.conversations
+Conversation.create_index([("is_group_room", pymongo.ASCENDING)])
+
 
 # Define Message tables
 Message = db.messages
